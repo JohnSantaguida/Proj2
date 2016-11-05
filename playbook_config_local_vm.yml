@@ -1,0 +1,42 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2016
+#
+# This playbook will be used by vagrant as part of the
+# ansible_local provisioner to install some package in our
+# created guest VM (ubuntu/xenial64)
+#
+# For the Assignment #2, build on top of this
+#
+- hosts: MyLocalVMs         # specified in the MyInventory file
+  remote_user:  ubuntu      # note that the user is ubuntu for the
+                            # vagrant-created VM
+
+  tasks:                    # the task to be performed
+  - name: Install libffi-dev,libssl-dev,build-essential,python-pip,python-dev,subversion using apt-get
+    apt: name=libffi-dev,libssl-dev,build-essential,python-pip,python-dev,subversion state=latest   # here we install svn and others
+    become: yes                         # as "sudo"
+  - name: pip install of shade, openstack
+    pip: name=shade,python-openstackclient
+    become: yes		
+  - name: copy pem file to local VM to build relay
+    copy: src=santaguida2.pem dest=/home/ubuntu/.ssh/santaguida2.pem mode=0600
+    become: yes
+  - name: create first server
+    os_server: 
+      auth:
+        auth_url: https://keystone.isis.vanderbilt.edu:5000/v2.0
+        username: santagjs
+        password: 3zAMzKHD
+        project_name: Cloud Class
+      name: pmjs_ansible_relay
+      image: 3554e94a-3fd3-4248-9425-baa107ee7f62
+      flavor: m1.small
+      floating_ips: 
+        - 129.59.107.44
+      network: b16b0244-e1b5-4d36-90ff-83a0d87d8682
+      key_name: santaguida2
+...
+

@@ -1,0 +1,5 @@
+[MyLocalVMs]
+127.0.0.1  ansible_connection=local 
+
+[MyHorizonVMs]
+129.59.107.44 ansible_connection=ssh ansible_shh_private_key_file=./.ssh/santaguida2.pem ssh_user='john.s.santaguida@vanderbilt.edu'

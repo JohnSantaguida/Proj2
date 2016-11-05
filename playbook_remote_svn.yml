@@ -1,0 +1,12 @@
+---
+# This playbook will install subversion (svn command) on our
+# Horizon Cloud VM
+- hosts: MyHorizonVMs
+  remote_user:  ubuntu
+
+  tasks:
+  - name: Install subversion using apt-get
+    apt: name=subversion state=latest
+    become: yes
+...
+

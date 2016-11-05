@@ -1,0 +1,23 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2016
+#
+# This playbook will install python on our Horizon Cloud VM
+# Python is needed to run a whole slew of different things. So
+# Python is the first thing we need. This will do that
+- hosts: MyHorizonVMs       # my list of VMs on horizon cloud
+                            # This entry is in our inventory file
+  remote_user:  ubuntu      # remote user is ubuntu
+  become: yes               # run as sudo
+  gather_facts: no          # do not gather facts from remote machine
+  pre_tasks:                # Task is something a playbook is supposed
+                            # to execute. Tasks contain actions which
+                            # are modules and their arguments
+    - name: 'install python2'     # always a good practice to name tasks
+      raw: apt-get install -y python    # raw module does not need
+                                        # python on remote side
+                    
+...
+
